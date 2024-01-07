@@ -15,6 +15,7 @@ public class ModuleEntity {
     }
     private int id;
     private String libelle;
+    private Boolean isArchived;
     private ClasseEntity classeEntity;
     public ModuleEntity(String libelle) {
         this.libelle = libelle;

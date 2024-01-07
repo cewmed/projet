@@ -43,5 +43,24 @@ public class ModuleServiceImpl implements ModuleService{
         }
         return false;
     }
+    @Override
+    public boolean modification(ModuleEntity data) {
+      return moduleReposytory.update(data) !=0;
+    }
+    @Override
+    public boolean archiver(ModuleEntity data) {
+    return moduleReposytory.archiver(data) !=0;
+    }
+    @Override
+    public ModuleEntity find(int id) {
+     ArrayList<ModuleEntity> tabModule = moduleReposytory.findAll();
+        for (ModuleEntity mod : tabModule) {
+                if (mod.getId() == id) {
+                        return mod;    
+                }
+        }
+        return null;
+    }
+   
     
 }

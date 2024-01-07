@@ -21,7 +21,7 @@ import com.ism.services.impl.AffectationServiceImpl;
 import com.ism.services.impl.ClasseServiceImpl;
 import com.ism.services.impl.ModuleServiceImpl;
 
-public class MenuClasse {
+public class MenuClasse extends BaseMenu{
     private DataBase dataBase=new MysqlImpl();
     // REPOSYTORY
     ClasseRepository classeRepository=new ClasseRepositoryImpl(dataBase);
@@ -34,9 +34,9 @@ public class MenuClasse {
     AffectationService affectationService=new AffectationServiceImpl(affectationReposytory);
 
    static Scanner sc = new Scanner(System.in);
-   final String fleche = "---------->\t";
-   final String LIGNE = "-----------------------------------------------------------------------------------------------------------------------------";
+   
    String[] menu = {"Ajouter une classe", "Lister les classes","Affecter un module a une classe","Lister les modules d'une classe","Lister les Classes qui font un module specifique","Quitter"};
+    
     public int gestionClasseMenu(){
 
         int choixMenu;
@@ -73,10 +73,56 @@ public class MenuClasse {
                 break;
             case 2:
                 System.out.println("\t\t Listes des classes :\n");
+                String action =super.actions();
+                System.out.println(action);
                 System.out.println("|ID|\t|NOM|\t\t|FILIERE|\t|NIVEAU|\n");
                 classeService.listerClasse().forEach(System.out::print);
-                System.out.println(LIGNE);
-                gestionClasseMenu();
+
+
+                sc.nextLine();
+                 action=sc.nextLine();
+                if (action.equalsIgnoreCase("X")) {
+
+                     System.out.println("Choisissez la classe");
+                     int idClasse=sc.nextInt();
+                    ClasseEntity classeEnCour = classeService.find(idClasse);
+                     if ( classeEnCour !=null) {
+                            System.out.println("Choisissez la nouvelle Filiere");
+                            classeService.listerFiliere().forEach(System.out::println);
+                            
+                            int newFiliere=sc.nextInt();
+                            FiliereEntity newFiliereSelect=classeService.listerFiliere().get(newFiliere-1);
+
+                            System.out.println("Choisissez le nouveau Niveau");
+                            classeService.listerNiveaux().forEach(System.out::println);
+                            int newNiveau=sc.nextInt();
+                             NiveauEntity newNiveauSelect=classeService.listerNiveaux().get(newNiveau-1);
+                            sc.nextLine();
+                            
+                           
+                            String newNom=String.format("%s %s",newNiveauSelect.getLibelle(),newFiliereSelect.getLibelle());
+                            classeEnCour.setNom(newNom);
+                            classeEnCour.setFiliere(newFiliereSelect.getLibelle());
+                            classeEnCour.setNiveau(newNiveauSelect.getLibelle());
+                            classeService.modification(classeEnCour);
+                              
+                        }else{
+                            System.out.println("Classe introuvable");
+                     }
+                     
+                }else if (action.equalsIgnoreCase("Z")){
+                             System.out.println("Choisissez la classe");
+                            int idClasse=sc.nextInt();
+                            ClasseEntity classeEnCour = classeService.find(idClasse);
+                            if ( classeEnCour !=null) {
+                                   classeService.archiver(classeEnCour);
+                            }else{
+                                System.out.println("Classe introuvable");
+                             }
+                }
+
+                // System.out.println(LIGNE);
+                // gestionClasseMenu();
                 break;
             case 3:
                 System.out.println("Choisissez la classe :\n\n");
@@ -151,6 +197,8 @@ public class MenuClasse {
                         System.out.println(LIGNE);
                         gestionClasseMenu(); 
                 break;
+
+            
         
             default:
 
@@ -160,5 +208,6 @@ public class MenuClasse {
         
         return choixMenu;
     }
+    
 }
 

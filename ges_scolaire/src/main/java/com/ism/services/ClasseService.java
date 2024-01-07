@@ -8,7 +8,7 @@ import com.ism.entities.FiliereEntity;
 import com.ism.entities.ModuleEntity;
 import com.ism.entities.NiveauEntity;
 
-public interface ClasseService {
+public interface ClasseService extends BaseService<ClasseEntity>{
     boolean ajouterClasse(ClasseEntity classeEntity);
      List<ClasseEntity> listerClasse();
      ArrayList<ModuleEntity> listerModuleParClasse(int id);

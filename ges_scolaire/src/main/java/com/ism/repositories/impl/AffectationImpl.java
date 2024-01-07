@@ -50,5 +50,17 @@ public class AffectationImpl implements AffectationReposytory{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
+
+    @Override
+    public int archiver(AffectationEntity data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'archiver'");
+    }
+
+    @Override
+    public int reinitialiser(AffectationEntity data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ressortir'");
+    }
     
 }

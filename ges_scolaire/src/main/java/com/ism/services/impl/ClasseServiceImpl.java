@@ -90,6 +90,7 @@ public class ClasseServiceImpl  implements ClasseService{
         return false;
 
     }
+ 
 
 
 
@@ -113,6 +114,53 @@ public class ClasseServiceImpl  implements ClasseService{
     public ArrayList<ClasseEntity> listerClasseParModule(int id) {
         return classeRepository.findAllClassesByModule(id);
     }
+
+
+
+
+
+
+
+    @Override
+    public boolean modification(ClasseEntity data) {
+       return classeRepository.update(data) !=0;
+    }
+
+
+
+
+
+
+
+    @Override
+    public ClasseEntity find(int id) {
+        List<ClasseEntity> tabClasses = classeRepository.findAll();
+        for (ClasseEntity cl : tabClasses) {
+            if (cl.getId()==id) {
+                return cl;
+            }      
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+    @Override
+    public boolean archiver(ClasseEntity data) {
+           return classeRepository.archiver(data) !=0;
+    }
+
+
+
+
+
+
+
+   
 
 
 

@@ -12,7 +12,9 @@ import com.ism.repositories.ModuleReposytory;
 public class ModuleImpl  implements ModuleReposytory{
     private DataBase dataBase;
     private final String SQL_INSERT="INSERT INTO `module`(`libelle`) VALUES (?)";
-    private final String SQL_SELECT_ALL="SELECT * FROM `module`";
+    private final String SQL_SELECT_ALL="SELECT * FROM `module` WHERE isArchived = false";
+    private final String SQL_UPDATE="UPDATE `module` SET `libelle`= ? WHERE id = ?";
+    private final String  SQL_ARCHIVER="UPDATE `module` SET `isArchived`= 1 WHERE id= ?";
 // Module by classe SELECT DISTINCT libelle FROM module m, classe c WHERE  m.classe_id = 2;
 
 
@@ -43,8 +45,25 @@ public class ModuleImpl  implements ModuleReposytory{
 
     @Override
     public int update(ModuleEntity data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        int ligne=0;
+        try {
+                dataBase.openConnexion();
+                dataBase.initPreparedStatement(SQL_UPDATE);
+                dataBase.getPs().setString(1,data.getLibelle());
+                dataBase.getPs().setInt(2,data.getId());
+                // dataBase.getPs().setInt(4,data.getModule_id());
+                 ligne=dataBase.executeUpdate();
+                  if (ligne > 0) {
+                        System.out.println("Le module a été mise à jour avec succès.");
+                  }else{
+                        System.out.println("Aucun module n'a été mise à jour.");      
+                  }
+                  dataBase.closeConnexion();
+                
+             } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return ligne;
     }
 
 
@@ -74,6 +93,37 @@ public class ModuleImpl  implements ModuleReposytory{
                 }
             
             return datas;
+    }
+
+
+    @Override
+    public int archiver(ModuleEntity data) {
+        int ligne=0;
+        try {
+                dataBase.openConnexion();
+                dataBase.initPreparedStatement(SQL_ARCHIVER);
+               
+                dataBase.getPs().setInt(1,data.getId());
+  
+                 ligne=dataBase.executeUpdate();
+                  if (ligne > 0) {
+                        System.out.println("Le module  a été archiver.");
+                  }else{
+                        System.out.println("Aucun module n'a été archiver.");      
+                  }
+                  dataBase.closeConnexion();
+                
+             } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return ligne;
+    }
+
+
+    @Override
+    public int reinitialiser(ModuleEntity data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reinitialiser'");
     }
     
 }

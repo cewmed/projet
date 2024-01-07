@@ -1,19 +1,26 @@
 package com.ism.entities;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 @Getter
 @Setter
-@AllArgsConstructor
+// @AllArgsConstructor
 @NoArgsConstructor
 public class ProfesseurEntity {
     private int id;
     private String nomComplet;
     private String email;
     private String specialite;
-
+    private Boolean isArchived;
+    public ProfesseurEntity(int id, String nomComplet, String email, String specialite) {
+        this.id = id;
+        this.nomComplet = nomComplet;
+        this.email = email;
+        this.specialite = specialite;
+    }
+    
     public ProfesseurEntity(int id, String nomComplet) {
         this.id = id;
         this.nomComplet = nomComplet;

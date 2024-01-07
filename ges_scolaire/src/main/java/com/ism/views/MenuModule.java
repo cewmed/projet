@@ -1,7 +1,5 @@
 package com.ism.views;
 
-import java.util.Scanner;
-
 
 import com.ism.entities.ModuleEntity;
 import com.ism.repositories.ClasseRepository;
@@ -15,7 +13,7 @@ import com.ism.services.ModuleService;
 import com.ism.services.impl.ClasseServiceImpl;
 import com.ism.services.impl.ModuleServiceImpl;
 
-public class MenuModule {
+public class MenuModule extends BaseMenu{
      private DataBase dataBase=new MysqlImpl();
     ClasseRepository classeRepository=new ClasseRepositoryImpl(dataBase);
     ModuleReposytory moduleReposytory=new ModuleImpl(dataBase);
@@ -24,8 +22,7 @@ public class MenuModule {
 
 
 
-   static Scanner sc = new Scanner(System.in);
-   final String fleche = "---------->\t";
+
    String[] menu = {"Creer un nouveau module", "Lister les Modules"};
     public int gestionModuleMenu(){
         int choixMenu;
@@ -52,10 +49,36 @@ public class MenuModule {
                      }
                     break;
                     case 2:
-                    System.out.println("\t\t\tListe des modules \n");
-                    System.out.println("|ID|\t|LIBELLE|\n");
+                        System.out.println("\t\t\tListe des modules \n");
+                        String action =super.actions();
+                        System.out.println(action);
+                        System.out.println("|ID|\t|LIBELLE|\n");
                         moduleService.listerModules().forEach(System.out::print);
-                        break;
+                        sc.nextLine();
+                        action=sc.nextLine();
+                        if (action.equalsIgnoreCase("X")) {
+                            System.out.println("Choisissez le module");
+                            int idModule=sc.nextInt();
+                            ModuleEntity moduleEnCour=moduleService.find(idModule);
+                            if (moduleEnCour!=null) {
+                                sc.nextLine();
+                                System.out.println("Entrer le nouveau libelle");
+                                moduleEnCour.setLibelle(sc.nextLine());
+                                moduleService.modification(moduleEnCour);
+                            }else{
+                                System.out.println("Module introuvable");
+                         }
+                        }else if (action.equalsIgnoreCase("Z")){
+                             System.out.println("Choisissez le module a archiver");
+                             int idModule=sc.nextInt();
+                            ModuleEntity moduleEnCour=moduleService.find(idModule);                           
+                            if ( moduleEnCour !=null) {
+                                   moduleService.archiver(moduleEnCour);
+                            }else{
+                                System.out.println("Module introuvable");
+                             }
+                }
+                    break;
             
                 default:
                     System.out.println("Vous avez quitter le programme");

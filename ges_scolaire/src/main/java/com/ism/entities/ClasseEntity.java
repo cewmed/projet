@@ -14,11 +14,17 @@ public class ClasseEntity {
     private String nom;
     private String filiere;
     private String niveau;
-
+    private Boolean isArchived;
          
 
     
-   public ClasseEntity(String nom) {
+   public ClasseEntity(String nom, String filiere, String niveau) {
+      this.nom = nom;
+      this.filiere = filiere;
+      this.niveau = niveau;
+    }
+
+  public ClasseEntity(String nom) {
       this.nom = nom;
     }
 

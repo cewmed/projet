@@ -9,12 +9,12 @@ import com.ism.repositories.impl.MysqlImpl;
 import com.ism.services.AuthService;
 import com.ism.services.impl.AuthServiceImpl;
 
-public class Main {
+public class Main extends Utils{
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+      
         int choix;  
-        final String fleche = "---------->\t";
-         String[] menu = {"Gestion des Classes", "Gestion des Modules", "Gestion des Professeurs","Gestion des Salles"};
+       
+         String[] menu = {menuItemStart+"Classes\n", menuItemStart+"Modules\n", menuItemStart+"Professeurs\n",menuItemStart+"Salles\n",menuItemStart+"Plannings"};
         
         // INJECTION DE DEPENDANCE
         DataBase dataBase = new MysqlImpl();
@@ -60,8 +60,13 @@ public class Main {
                     MenuSalle menuSalle=new MenuSalle();
                     choix=menuSalle.gestionMenuSalle();
                     break;
+                case 5:
+                    MenuPlanning menuPlanning =new MenuPlanning();
+                    choix=menuPlanning.gestionPlanningMenu();
+                    break;
             
                 default:
+                sc.close();
                     break;
             }
         } while (choix != menu.length);

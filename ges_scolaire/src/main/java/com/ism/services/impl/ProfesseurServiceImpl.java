@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ism.entities.ClasseEntity;
+import com.ism.entities.CourEntity;
 import com.ism.entities.EnseignementEntity;
 import com.ism.entities.ModuleEntity;
 import com.ism.entities.ProfesseurEntity;
@@ -78,6 +79,37 @@ public class ProfesseurServiceImpl implements ProfesseurService{
     @Override
     public boolean affecterModuleClasse(EnseignementEntity data) {
        return enseignementReposytory.insert(data)!=0;
+    }
+
+    @Override
+    public boolean modification(ProfesseurEntity data) {
+       return professeurReposytory.update(data)!=0;
+    }
+
+    @Override
+    public boolean archiver(ProfesseurEntity data) {
+        return professeurReposytory.archiver(data) !=0;
+    }
+
+    @Override
+    public ProfesseurEntity find(int id) {
+        ArrayList<ProfesseurEntity> profs = professeurReposytory.findAll();
+        for (ProfesseurEntity prof : profs) {
+                if (prof.getId() == id) {
+                        return prof;    
+                }
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<ProfesseurEntity> listerProfesseurParModule(int id) {
+        return professeurReposytory.findProfByModuleId(id);
+    }
+
+    @Override
+    public ArrayList<CourEntity> listerSesCours(int id) {
+         return professeurReposytory.findCoursByProf(id);
     }
     
 }

@@ -1,7 +1,6 @@
 package com.ism.views;
 
 
-import java.util.Scanner;
 
 import com.ism.entities.ClasseEntity;
 import com.ism.entities.EnseignementEntity;
@@ -27,10 +26,7 @@ import com.ism.services.impl.EnseignementServiceImpl;
 import com.ism.services.impl.ModuleServiceImpl;
 import com.ism.services.impl.ProfesseurServiceImpl;
 
-public class MenuProfesseur{
-    static Scanner sc = new Scanner(System.in);
-   final String fleche = "---------->\t";
-   final String LIGNE = "-----------------------------------------------------------------------------------------------------------------------------";
+public class MenuProfesseur extends BaseMenu{
    String[] menu = {"Enregistrer un Professeur","Afficher les Professeurs","Voir les [Classes,Modules] d'un Professeur","Affecter [Module,Classe] a un Prof"};
     DataBase dataBase=new MysqlImpl();
     ProfesseurReposytory professeurReposytory=new ProfesseurImpl(dataBase);
@@ -91,7 +87,7 @@ public class MenuProfesseur{
                                             System.out.println(nomComplet+" a ete enregistrer et a une classe!");
                                         }                                        
                                     } else {
-                                        System.out.println("Module introuvale!");
+                                        System.out.println("Module introuvable!");
                                     }
                             }                          
                          }else{
@@ -107,10 +103,53 @@ public class MenuProfesseur{
                 default:
                     break;
                 case 2:
-                System.out.println("\t\t Listes des professeurs :\n");
-                System.out.println("|ID|\t|NOM COMPLET|\t\t\t|EMAIL|\t\t\t|SPECIALITE|\n");
-                professeurService.listerProfesseur().forEach(System.out::println); 
-                System.out.println(LIGNE);
+                        System.out.println("\t\t Listes des professeurs :\n");
+                        String action =super.actions();
+                        System.out.println(action);
+                        System.out.println("|ID|\t|NOM COMPLET|\t\t\t|EMAIL|\t\t\t|SPECIALITE|\n");
+                        professeurService.listerProfesseur().forEach(System.out::println); 
+                        sc.nextLine();
+                        action=sc.nextLine();
+                        if (action.equalsIgnoreCase("X")) {
+                                System.out.println("Choisissez le professeur ");
+                                int idProfesseur=sc.nextInt();
+                                ProfesseurEntity profEnCour=professeurService.find(idProfesseur);
+                            //    
+                                if (profEnCour!=null) {
+                                    sc.nextLine();
+                                    System.out.println("Entrer son nouveau nom :");
+                                    profEnCour.setNomComplet(sc.nextLine());
+                                    System.out.println("Email : ");
+                                    String emailEnCour=sc.nextLine();
+                                    
+                                    if (professeurService.emailValidator(emailEnCour)) {
+                                        profEnCour.setEmail(emailEnCour);
+                                        System.out.println("Choisissez la specialite de "+profEnCour.getNomComplet());
+                                        professeurService.listerSpecialite().forEach(System.out::println);
+                                        int idSpecialite=sc.nextInt();
+                                        SpecialteEntity specialite=professeurService.listerSpecialite().get(idSpecialite-1);
+                                        profEnCour.setSpecialite(specialite.getLibelle());
+                                        professeurService.modification(profEnCour);
+                                    }else{
+                                        System.out.println("Email invalide boy ! ;(");
+                                    }
+                                        
+                                }else{
+                                    System.out.println("Professeur introuvable");
+                                }
+                            }else if (action.equalsIgnoreCase("Z")){
+                                System.out.println("Choisissez le professeur a archiver");
+                                int idProfesseur=sc.nextInt();
+                               ProfesseurEntity profEnCour=professeurService.find(idProfesseur);                           
+                               if ( profEnCour !=null) {
+                                      professeurService.archiver(profEnCour);
+                                      System.out.println(profEnCour.getNomComplet() +" a été archiver.");
+                               }else{
+                                   System.out.println("Professeur introuvable");
+                                }
+                   }
+                    // 
+                        System.out.println(LIGNE);
                 break;
                 case 3:
                 professeurService.listerProfesseur().forEach(System.out::println); 
@@ -133,10 +172,12 @@ public class MenuProfesseur{
                 break;
                 case 4:
                     professeurService.listerProfesseur().forEach(System.out::println); 
+                     
                     System.out.println("\nChoisissez l'id du prof :");
                     int profId=sc.nextInt();
 
                     if (professeurService.rechercherProfViaId(profId)) {
+                //A REVOIR   Je dois gerer le cas pour les prof archiver on affiche pas meme si il a des modules
                         System.out.println("Affectez lui une classe :\n\n");
                          System.out.println("|ID|\t|NOM|\t\t|FILIERE|\t|NIVEAU|\n");
                         classeService.listerClasse().forEach(System.out::print);
@@ -161,7 +202,7 @@ public class MenuProfesseur{
                                            String notif= professeurService.affecterModuleClasse(enseignementEntity) ? "L'enregistrement s'est bien déroule" : "L'enregistrement s'est mal déroule";
                                             System.out.println(notif);
                                     } else {
-                                        System.out.println("Module introuvale!");
+                                        System.out.println("Module introuvable!");
                                     }
                             }                          
                          }else{

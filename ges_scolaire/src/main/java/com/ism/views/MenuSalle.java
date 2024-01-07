@@ -1,6 +1,5 @@
 package com.ism.views;
 
-import java.util.Scanner;
 
 import com.ism.entities.SalleEntity;
 
@@ -15,7 +14,7 @@ import com.ism.services.SalleService;
 
 import com.ism.services.impl.SalleServiceImpl;
 
-public class MenuSalle {
+public class MenuSalle extends BaseMenu{
      private DataBase dataBase=new MysqlImpl();
 
     SalleReposytory salleReposytory=new SalleImpl(dataBase);
@@ -24,8 +23,6 @@ public class MenuSalle {
 
 
 
-   static Scanner sc = new Scanner(System.in);
-   final String fleche = "---------->\t";
    String[] menu = {"Ajouter une nouveau salle", "Lister les salles"};
     public int gestionMenuSalle(){
         int choixMenu;

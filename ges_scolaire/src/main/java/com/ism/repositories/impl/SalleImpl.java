@@ -74,5 +74,17 @@ public class SalleImpl implements SalleReposytory{
             
             return datas;
     }
+
+    @Override
+    public int archiver(SalleEntity data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'archiver'");
+    }
+
+    @Override
+    public int reinitialiser(SalleEntity data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reinitialiser'");
+    }
     
 }
